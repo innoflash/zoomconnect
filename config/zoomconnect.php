@@ -14,9 +14,12 @@ return [
         'xml' => [
             'single' => 'https://www.zoomconnect.com/app/api/rest/v1/sms/send.xml',
             'bulk' => 'https://www.zoomconnect.com/app/api/rest/v1/sms/send-bulk.xml'
-        ]
+        ],
+        'get_contents' => [
+            'single' => 'https://www.zoomconnect.com/app/api/rest/v1/sms/send.json',
+            'bulk' => 'https://www.zoomconnect.com/app/api/rest/v1/sms/send-bulk.json'
+        ],
     ],
-
     /**
      * This is the email used to register and is used by ZoomConnect to identify you
      */
@@ -30,7 +33,9 @@ return [
     /**
      * This selects the way you would wanna send the SMS
      * 
-     * Available options are [json, xml]
+     * Available options are [json, xml, get_contents]
+     * 
+     * get_contents runs file_get_contents() function
      */
-    'sms_method' => 'json'
+    'sms_method' => 'get_contents'
 ];

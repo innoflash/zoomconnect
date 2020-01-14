@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Innoflash\Zoomconnect\SMSModes\XMLMode;
 use Innoflash\Zoomconnect\SMSModes\JSONMode;
+use Innoflash\Zoomconnect\SMSModes\GetContentsMode;
 use Innoflash\Zoomconnect\ZoomconnectFacade;
 use Innoflash\Zoomconnect\Contracts\SMSModeContract;
 use Innoflash\Zoomconnect\Helpers\ZoomConnectConfig;
@@ -28,7 +29,8 @@ class ZoomconnectServiceProvider extends ServiceProvider
 
         $this->app->singleton(SMSModeContract::class, function ($app) {
             if (ZoomConnectConfig::getSMSMethod() === 'json') return new JSONMode();
-            return new XMLMode();
+            if (ZoomConnectConfig::getSMSMethod() === 'xml') return new XMLMode();
+            return new GetContentsMode();
         });
     }
 

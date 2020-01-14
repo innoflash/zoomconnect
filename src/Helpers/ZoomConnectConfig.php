@@ -8,7 +8,8 @@ class ZoomConnectConfig
 {
     private static $methods = [
         'json',
-        'xml'
+        'xml',
+        'get_contents'
     ];
     /**
      * Finds the email set for ZoomConnect

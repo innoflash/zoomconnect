@@ -2,7 +2,10 @@
 
 namespace Innoflash\Zoomconnect\Contracts;
 
+use Exception;
 use GuzzleHttp\Client;
+use Innoflash\Zoomconnect\Models\MessageResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 use Innoflash\Zoomconnect\Helpers\ZoomConnectConfig;
 use Innoflash\Zoomconnect\Exceptions\MessageException;
 use Innoflash\Zoomconnect\Exceptions\RecipientException;
@@ -38,7 +41,7 @@ abstract class SMSModeContract
         return $this->message;
     }
 
-    private function getHeaders()
+    protected function getHeaders()
     {
         return [
             'Content-Type' => 'application/' . ZoomConnectConfig::getSMSMethod(),
@@ -54,7 +57,7 @@ abstract class SMSModeContract
             'timeout'  => 5.0,
         ]);
         return $client->post(ZoomConnectConfig::getSingleSMSUrl(), [
-            'json' => (array) $this->getMessageData($this->getRecipient(), $this->getMessage())
+            'content' => (array) $this->getMessageData($this->getRecipient(), $this->getMessage())
         ]);
 
         // $ch = curl_init(ZoomConnectConfig::getSingleSMSUrl());
@@ -64,5 +67,24 @@ abstract class SMSModeContract
         // curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHeaders());
         // $result = curl_exec($ch);
         //   return $this->getMessageData($this->getRecipient(), $this->getMessage());
+    }
+
+    protected function processError(Exception $e)
+    {
+        if ($e->getCode() === 401) throw AuthorizationException('You are not authorized to use this service, invalid credentials');
+        if ($e->getCode() === 403) throw AuthorizationException('You are not authorized to use this service, you are forbidden');
+        else \abort(500, $e->getMessage());
+    }
+
+    protected function processOnSuccess($result): array
+    {
+        $result = json_encode($result, true);
+        $result = (object) $result;
+
+        $messageResponse = new MessageResponse;
+        $messageResponse->setMessage($this->getMessage());
+        $messageResponse->setRecipientNumber($this->getRecipient());
+        $messageResponse->setMessageId($result->messageId);
+        return (array) $messageResponse;
     }
 }
