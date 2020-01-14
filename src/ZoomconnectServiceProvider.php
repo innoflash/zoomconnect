@@ -16,6 +16,7 @@ class ZoomconnectServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/zoomconnect.php', 'zoomconnect');
         $this->publishThings();
+        $this->register();
         // $this->loadViewsFrom(__DIR__.'/resources/views', 'zoomconnect');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->registerRoutes();
@@ -65,7 +66,7 @@ class ZoomconnectServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/zoomconnect.php' => config_path('zoomconnect.php'),
-            ], 'config');
+            ], 'zoomconnect-config');
         }
     }
 }
