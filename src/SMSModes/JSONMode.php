@@ -12,7 +12,7 @@ class JSONMode extends SMSModeContract
         return 'json';
     }
 
-    function getMessageData(string $recipient, string $message): string
+    function getMessageData(string $recipient, string $message)
     {
         $data = new stdClass();
         $data->message = $message;
