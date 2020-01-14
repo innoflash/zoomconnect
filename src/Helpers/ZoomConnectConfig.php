@@ -4,7 +4,7 @@ namespace Innoflash\Zoomconnect\Helpers;
 
 use Innoflash\Zoomconnect\Exceptions\ConfigException;
 
-class Config
+class ZoomConnectConfig
 {
     private static $methods = [
         'json',
@@ -21,7 +21,7 @@ class Config
     /**
      * Retrieves ZoomConnect the API token
      */
-    static function getApiToken(): string
+    private static function getApiToken(): string
     {
         return self::findConfig('api_token');
     }
@@ -41,6 +41,25 @@ class Config
     {
         $method = self::findConfig('sms_method');
         return self::validateOption('sms_method', $method, self::$methods);
+    }
+
+    /**
+     * Gets the URL for the selected SMS method for a single SMS
+     */
+    static function getSingleSMSUrl(): string
+    {
+        $method = self::getSMSMethod();
+
+        return self::findConfig("url.$method.single");
+    }
+
+    /**
+     * Gets the URL for bulk SMSing
+     */
+    static function getBulkSMSUrl(): string
+    {
+        $method = self::getSMSMethod();
+        return self::findConfig("url.$method.bulk");
     }
 
     /**

@@ -25,7 +25,7 @@ return [
     /**
      * This is the api token given to you by ZoomConnect
      */
-    'api_token' => env('ZOOMCONNECT_TOKEN', null),
+    'api_token' => env('ZOOMCONNECT_API_TOKEN', null),
 
     /**
      * This selects the way you would wanna send the SMS
