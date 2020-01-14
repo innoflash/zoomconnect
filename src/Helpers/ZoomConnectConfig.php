@@ -28,6 +28,7 @@ class ZoomConnectConfig
 
     /**
      * Retrieves the credentials to use on ZoomConnect
+     * @return string The credentials
      */
     static function getCredentials(): string
     {
@@ -36,6 +37,8 @@ class ZoomConnectConfig
 
     /**
      * Gets the set method to send the SMS
+     * 
+     * @return string Returns a method either json or xml
      */
     static function getSMSMethod(): string
     {

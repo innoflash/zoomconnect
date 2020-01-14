@@ -32,5 +32,5 @@ return [
      * 
      * Available options are [json, xml]
      */
-    'sms_method' => 'xml'
+    'sms_method' => 'json'
 ];

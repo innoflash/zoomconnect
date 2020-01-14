@@ -2,8 +2,13 @@
 
 namespace Innoflash\Zoomconnect;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Innoflash\Zoomconnect\SMSModes\XMLMode;
+use Innoflash\Zoomconnect\SMSModes\JSONMode;
+use Innoflash\Zoomconnect\ZoomconnectFacade;
+use Innoflash\Zoomconnect\Contracts\SMSModeContract;
+use Innoflash\Zoomconnect\Helpers\ZoomConnectConfig;
 
 class ZoomconnectServiceProvider extends ServiceProvider
 {
@@ -20,6 +25,11 @@ class ZoomconnectServiceProvider extends ServiceProvider
         // $this->loadViewsFrom(__DIR__.'/resources/views', 'zoomconnect');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->registerRoutes();
+
+        $this->app->singleton(SMSModeContract::class, function ($app) {
+            if (ZoomConnectConfig::getSMSMethod() === 'json') return new JSONMode();
+            return new XMLMode();
+        });
     }
 
     /**
